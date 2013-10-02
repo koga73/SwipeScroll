@@ -14,6 +14,7 @@ SwipeScroll is a jQuery plug-in that provides touch based swiping for Tablets an
 *The following is an example for Swipeable marquees. See examples/marquee.html*
 
 HTML
+```
 	<div id="scrollerWrapper">
 		<ul id="scroller">
 			<li class="scroller-child" style="background-color:#FF0000;"></li>
@@ -30,8 +31,10 @@ HTML
 			<li class="scroller-child" style="background-color:#800080;"></li>
 		</ul>
 	</div>
+```
 
 CSS
+```
 	#scrollerWrapper {
 		overflow:hidden;
 		width:100%;
@@ -50,8 +53,10 @@ CSS
 		float:left;
 		height:100%;
 	}
+```
 
 JavaScript
+```
 	$(document).on("ready", function(){
 		sizeScroller(1);							//Show one child at a time
 
@@ -68,3 +73,4 @@ JavaScript
 		$("#scroller").css("width", scrollerWidth + "%");
 		scrollerChildren.css("width", childWidth + "%");
 	}
+```
