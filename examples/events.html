@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SwipeScroll Events</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <style type="text/css">
+			* {
+				margin:0;
+				border:0;
+				padding:0;
+			}
+			
+			ul, ol {
+				list-style:none;
+			}
+			
+			#scrollerWrapper {
+				overflow:hidden;
+				width:100%;
+				height:500px;
+				position:relative;
+				background-color:#F0F0F0;
+			}
+			
+			#scroller {
+				position:relative;
+				left:0;
+				top:0;
+			}
+        </style>
+	</head>
+	<body>
+		<div id="scrollerWrapper">
+			<ul id="scroller">
+				<li>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce at odio placerat, viverra sem eget, blandit nisl. Proin gravida pretium lorem in ultricies. Suspendisse interdum mi erat, ac sagittis nisi porttitor non. Proin pretium, nisl in pharetra porta, magna metus pharetra libero, eget dignissim tellus ipsum ac augue. Morbi ullamcorper urna non feugiat fermentum. Nam a nibh nulla. Nam luctus vestibulum nulla, quis fermentum arcu laoreet eu. Aliquam auctor odio nec augue lacinia consequat. Vestibulum eu odio viverra, tincidunt nulla sit amet, pellentesque eros. 
+					<br/>
+					<br/>
+				</li>
+				<li>
+					Nullam ullamcorper sagittis neque sit amet porttitor. Donec ut ultricies est, vel varius quam. Donec quis porta nibh. Fusce rutrum, purus sit amet interdum placerat, elit turpis dapibus magna, et tempor purus nibh et metus. Proin sollicitudin neque at ipsum elementum, hendrerit mattis augue dictum. Sed gravida ultricies scelerisque. Nunc placerat purus elementum lorem aliquet vehicula. In ut tristique velit. Nunc dolor justo, semper nec nibh non, aliquam feugiat enim. Nam mattis lectus enim, eget dictum lectus tincidunt vel. Sed suscipit dictum diam ut sagittis. 
+					<br/>
+					<br/>
+				</li>
+				<li>
+					Quisque gravida lorem non felis placerat, at elementum libero varius. Fusce mattis magna et molestie imperdiet. Aenean laoreet eros ornare purus dictum, non luctus tellus scelerisque. Aliquam tristique mi at est cursus adipiscing. Maecenas id nisl lacinia, adipiscing ligula sed, auctor ipsum. Pellentesque mollis tortor a libero blandit porta. Etiam interdum tempor tristique. Cras iaculis eros id leo pretium, vulputate ullamcorper urna tincidunt. Pellentesque id luctus leo. Pellentesque risus justo, sodales eu imperdiet ac, eleifend non diam. In ac tortor non massa hendrerit porta. Fusce posuere sapien velit, eu sagittis lacus pretium non. Nunc auctor, neque et euismod sodales, dolor lacus convallis dui, id auctor nisi quam non est. Curabitur aliquam non dui sit amet elementum. Mauris posuere dolor et turpis semper elementum. In hac habitasse platea dictumst. 
+					<br/>
+					<br/>
+				</li>
+				<li>
+					Praesent convallis in enim vel scelerisque. Integer eget erat ut risus blandit pharetra eu vel ligula. Fusce lobortis elit mattis sagittis interdum. Pellentesque vel dictum nulla. Duis rhoncus justo et risus euismod, nec dignissim ligula hendrerit. Aliquam volutpat lorem nisl, quis feugiat est fringilla sed. Ut purus nulla, viverra suscipit cursus vel, lacinia a quam. 
+					<br/>
+					<br/>
+				</li>
+				<li>
+					Donec luctus egestas pellentesque. Proin lacinia mattis nulla, sit amet laoreet risus ornare at. Pellentesque augue dui, gravida vitae aliquet ac, dictum feugiat quam. Aenean id diam ut tortor tincidunt viverra eget eget enim. Proin volutpat lectus et eros molestie, at laoreet tellus molestie. Donec augue ligula, aliquet at blandit ut, consectetur nec nisl. Duis lorem lectus, venenatis eu enim eget, aliquam bibendum nunc. Fusce eros dolor, varius non aliquam eget, cursus vel felis.
+				</li>
+			</ul>
+		</div>
+		
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/SwipeScroll.min.js"></script>
+		<script type="text/javascript">
+			$(document).on("ready", function(){
+				var scroller = $("#scroller").SwipeScroll({ //Initialize SwipeScroll returns instance
+					useSnap:false,
+					scrollbars:true
+				});
+				
+				scroller.on(SwipeScroll.EVENT_CHANGING, function(evt, args){ //Fires on begin change
+					console.log("CHANGING TO CHILD INDEX: " + args.selectedIndex);
+				});
+				
+				scroller.on(SwipeScroll.EVENT_CHANGED, function(evt, args){ //Fires on end change
+					console.log("CHANGED TO CHILD INDEX: " + args.selectedIndex);
+				});
+			});
+		</script>
+	</body>
+</html>

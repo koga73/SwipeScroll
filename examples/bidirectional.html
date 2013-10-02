@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SwipeScroll Bidirectional</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <style type="text/css">
+			* {
+				margin:0;
+				border:0;
+				padding:0;
+			}
+			
+			ul, ol {
+				list-style:none;
+			}
+			
+			#scrollerWrapper {
+				overflow:hidden;
+				width:500px;
+				height:500px;
+				position:relative;
+				background-color:#F0F0F0;
+			}
+			
+			#scroller {
+				position:relative;
+				top:0;
+				left:0;
+				display:table;
+			}
+			
+			.scroller-child {
+				position:absolute;
+			}
+        </style>
+	</head>
+	<body>
+		<div id="scrollerWrapper">
+			<ul id="scroller">
+			</ul>
+		</div>
+		
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/SwipeScroll.min.js"></script>
+		<script type="text/javascript">
+			var NUM_CHILDREN = 49; //Should be a square
+			var SIZE_INCREMENT = 100; //px
+			
+			$(document).on("ready", function(){
+				buildScroller(NUM_CHILDREN, SIZE_INCREMENT);
+				
+				var scroller = $("#scroller").SwipeScroll({ //Initialize SwipeScroll returns jQuery instance
+					fps:60,
+					bidirectional:true
+				}); 
+			});
+			
+			//This is only used to generate the scroll content for this example
+			function buildScroller(numChildren, sizeIncrement){
+				var scrollerWrapper = $("#scrollerWrapper");
+				var scroller = $("#scroller");
+				var sqrtNumChildren = Math.sqrt(numChildren);
+				var gridSize = ((sqrtNumChildren * (sqrtNumChildren + 1)) >> 1);
+				var scrollerWrapperSize = sqrtNumChildren * sizeIncrement;
+				var scrollerSize = gridSize * sizeIncrement;
+				scrollerWrapper.css("width", scrollerWrapperSize + "px");
+				scrollerWrapper.css("height", scrollerWrapperSize + "px");
+				scroller.css("width", scrollerSize + "px");
+				scroller.css("height", scrollerSize + "px");
+				
+				for (var i = 0; i < sqrtNumChildren; i++){
+					var y = ((i * (i + 1)) >> 1) * sizeIncrement;
+					var height = (i + 1) * sizeIncrement;
+					var xAccumulator = 0;
+					for (var j = 0; j < sqrtNumChildren; j++){
+						var xOffset = (i < sqrtNumChildren - 1) ? (j + i) % sqrtNumChildren : j;
+						var x = xAccumulator; //((j * (j + 1)) >> 1) * sizeIncrement;
+						var width = (xOffset + 1) * sizeIncrement;
+						xAccumulator += width;
+						var color = Math.random() * 0xFFFFFF;
+						var r = (color >> 16) & 0xFF;
+						var g = (color >> 8) & 0xFF;
+						var b = (color >> 0) & 0xFF;
+						var child = $("<li class='scroller-child'></li>");
+						child.css("left", x + "px");
+						child.css("top", y + "px");
+						child.css("width", width + "px");
+						child.css("height", height + "px");
+						child.css("background-color", "rgb(" + r + ", " + g + ", " + b + ")");
+						scroller.append(child);
+					}
+				}
+			}
+		</script>
+	</body>
+</html>
