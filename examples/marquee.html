@@ -77,15 +77,15 @@
 			$(document).on("ready", function(){
 				sizeScroller(NUM_CHILDREN_VISIBLE);
 				
-				scroller = $("#scroller").SwipeScroll({ //Initialize SwipeScroll returns jQuery instance
-					fps:60,
-					scrollbars:true
+				scroller = $("#scroller").SwipeScroll({ 		//Initialize SwipeScroll returns jQuery instance
+					fps:60,										//Defaults to 30fps. Some devices (such as iPads) are able to run at 60fps
+					scrollbars:true								//Defaults to false
 				});
 				
 				initArrows(NUM_CHILDREN_VISIBLE);
 			});
 			
-			function sizeScroller(numChildrenVisible){
+			function sizeScroller(numChildrenVisible){			//Used to size children width
 				var scrollerChildren = $(".scroller-child");
 				var scrollerWidth = (100 / numChildrenVisible) * scrollerChildren.length;
 				var childWidth = 100 / scrollerChildren.length;
