@@ -76,15 +76,16 @@ There is no need to tell SwipeScroll which direction it needs to move. This is d
 ####Optional Parameters####
 *All parameters are optional and can be passed in using an object when initializing a SwipeScroll instance*
 
-* fps					DEFAULT = 30					Frames Per Second for rendering
-* timing				DEFAULT = 0.5					Number of seconds to scroll
-* dragThreshold			DEFAULT = 32					Minimum distance in pixels needed before swiping
-* overDrag				DEFAULT = 0.25					Percent of elements parent size when dragging at edges
-* dragMaxSpeed			DEFAULT = 1024					Maximum pixels/second with momentum
+* fps					DEFAULT = 30					FPS for rendering
+* timing				DEFAULT = 0.5					Number of seconds to tween over for momentum
+* dragThreshold			DEFAULT = 32					Minimum distance in pixels needed before dragging
+* overDrag				DEFAULT = 0.25					Percent of elements parent size when over-dragging
+* dragMaxSpeed			DEFAULT = 1024					Maximum pixels/second for momentum
 * dragSpeedFactor		DEFAULT = 0.5					Factors into momentum
 * useMomentum			DEFAULT = true					Use momentum after the user stops dragging
 * useSnap				DEFAULT = true					Snap to immediate children
 * scrollbars			DEFAULT = false					Show scrollbars
-* scrollEasing			DEFAULT = null (expoEaseOut)	Easing method for momentum when css animation is not used
-* cssAnimationClass		DEFAULT = null (disabled)		CSS3 animation class to use when tweening
+* scrollEasing			DEFAULT = null (expoEaseOut)	Easing method for tweening
+* cssAnimationClass		DEFAULT = null (disabled)		CSS3 animation class for tweening
 * bidirectional			DEFAULT = false					Allow horizontal/vertical dragging at the same time
+One thing to note is when `scrollEasing` is null it defaults to an expoEaseOut method. When `cssAnimationClass` is defined it will apply this class instead of using the easing equation (while falling back on easing equation for older browsers). In my tests using the easing equation always performs better than using css3 transitions. I think this is due to the speed the easing equation executes at in comparison to the calculations done by the browser for computing easing. Both easing equation and css3 animations utilize hardware-accelerated rendering.
