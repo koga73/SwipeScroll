@@ -14,7 +14,7 @@ SwipeScroll is a jQuery plug-in that provides touch based swiping for Tablets an
 *The following is an example for Swipeable marquees. See examples/marquee.html*
 
 HTML
-```
+```HTML
 	<div id="scrollerWrapper">
 		<ul id="scroller">
 			<li class="scroller-child" style="background-color:#FF0000;"></li>
@@ -31,7 +31,7 @@ HTML
 When snapping is enabled for the SwipeScroll instance the top-left of `scroller` children will snap with the top-left of `scrollerWrapper`.
 
 CSS
-```
+```Less
 	#scrollerWrapper {
 		overflow:hidden;
 		width:100%;
@@ -53,7 +53,7 @@ CSS
 ```
 
 JavaScript
-```
+```JavaScript
 	$(document).on("ready", function(){
 		sizeScroller(1);								//Show one child at a time
 
@@ -75,7 +75,7 @@ There is no need to tell SwipeScroll which direction it needs to move. This is d
 
 ####Optional Parameters####
 *All parameters are optional and can be passed in using an object when initializing a SwipeScroll instance*
-
+<pre>
 * fps					DEFAULT = 30					FPS for rendering
 * timing				DEFAULT = 0.5					Number of seconds to tween over for momentum
 * dragThreshold			DEFAULT = 32					Minimum distance in pixels needed before dragging
@@ -88,5 +88,6 @@ There is no need to tell SwipeScroll which direction it needs to move. This is d
 * scrollEasing			DEFAULT = null (expoEaseOut)	Easing method for tweening
 * cssAnimationClass		DEFAULT = null (disabled)		CSS3 animation class for tweening
 * bidirectional			DEFAULT = false					Allow horizontal/vertical dragging at the same time
+</pre>
 
-*One thing to note is when `scrollEasing` is null it defaults to an expoEaseOut method. When `cssAnimationClass` is defined it will apply this class instead of using the easing equation (while falling back on easing equation for older browsers). In my tests using the easing equation always performs better than using css3 transitions. I think this is due to the speed the easing equation executes at in comparison to the calculations done by the browser for computing easing. Both easing equation and css3 animations utilize hardware-accelerated rendering.*
+One thing to note is when `scrollEasing` is null it defaults to an expoEaseOut method. When `cssAnimationClass` is defined it will apply this class instead of using the easing equation (while falling back on easing equation for older browsers). In my tests using the easing equation always performs better than using css3 transitions. I think this is due to the speed the easing equation executes at in comparison to the calculations done by the browser for computing easing. Both easing equation and css3 animations utilize hardware-accelerated rendering.
