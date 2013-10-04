@@ -72,3 +72,19 @@ JavaScript
 	}
 ```
 There is no need to tell SwipeScroll which direction it needs to move. This is determined automatically based on the size of the `scroller` in relation to the size of `scrollerWrapper`. For example if both `scroller` and `scrollerWrapper` are the same height (as in this case) but `scroller` is wider than `scrollerWrapper` then horizontal scrolling will be enabled.
+
+####Optional Parameters####
+*All parameters are optional and can be passed in using an object when initializing a SwipeScroll instance*
+
+* fps					DEFAULT = 30					Frames Per Second for rendering
+* timing				DEFAULT = 0.5					Number of seconds to scroll
+* dragThreshold			DEFAULT = 32					Minimum distance in pixels needed before swiping
+* overDrag				DEFAULT = 0.25					Percent of elements parent size when dragging at edges
+* dragMaxSpeed			DEFAULT = 1024					Maximum pixels/second with momentum
+* dragSpeedFactor		DEFAULT = 0.5					Factors into momentum
+* useMomentum			DEFAULT = true					Use momentum after the user stops dragging
+* useSnap				DEFAULT = true					Snap to immediate children
+* scrollbars			DEFAULT = false					Show scrollbars
+* scrollEasing			DEFAULT = null (expoEaseOut)	Easing method for momentum when css animation is not used
+* cssAnimationClass		DEFAULT = null (disabled)		CSS3 animation class to use when tweening
+* bidirectional			DEFAULT = false					Allow horizontal/vertical dragging at the same time
