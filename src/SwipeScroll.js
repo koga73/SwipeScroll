@@ -696,7 +696,6 @@ var SwipeScroll = {
 				var parentHeight = _parent.height();
 				if (elementWidth > parentWidth){ //Horizontal
 					var childWidth = child.width();
-					console.log((x + childWidth), elementWidth);
 					if (Math.abs((x + childWidth) - elementWidth) <= 1){ //Edge
 						x -= parentWidth - childWidth;
 					}
