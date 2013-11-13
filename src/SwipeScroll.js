@@ -235,15 +235,15 @@ var SwipeScroll = {
 				if (typeof(selectChild.data("SwipeScroll.index")) === typeof(undefined)){
 					_methods.updateChildren();
 				}
-				var selectChildPoint = selectChild.position();
-				_toElementPoint.x = -selectChildPoint.left;
-				_toElementPoint.y = -selectChildPoint.top;
+				var selectChildPoint = _methods.getChildPoint(selectChild);
+				_toElementPoint.x = -selectChildPoint.x;
+				_toElementPoint.y = -selectChildPoint.y;
 				_methods.rangeElementPoint();
 				
 				var snapChild = _methods.getClosestChild(_toElementPoint);
-				var snapChildPoint = snapChild.position();
-				_toElementPoint.x = -snapChildPoint.left;
-				_toElementPoint.y = -snapChildPoint.top;
+				var snapChildPoint = _methods.getChildPoint(snapChild);
+				_toElementPoint.x = -snapChildPoint.x;
+				_toElementPoint.y = -snapChildPoint.y;
 				if (_element.is(":hidden")){ //Position not accurate
 					_toElementPoint.x = 0;
 					_toElementPoint.y = 0;
@@ -674,9 +674,9 @@ var SwipeScroll = {
 				var childrenLen = children.length;
 				for (var i = 0; i < childrenLen; i++){
 					var child = $(children[i]);
-					var childPoint = child.position();
-					var diffX = fromPoint.x + childPoint.left;
-					var diffY = fromPoint.y + childPoint.top;
+					var childPoint = _methods.getChildPoint(child);
+					var diffX = fromPoint.x + childPoint.x;
+					var diffY = fromPoint.y + childPoint.y;
 					var dist = Math.sqrt(diffX * diffX + diffY * diffY);
 					if (bestDist == -1 || dist < bestDist){
 						bestDist = dist;
@@ -684,6 +684,33 @@ var SwipeScroll = {
 					}
 				}
 				return bestChild;
+			},
+			
+			getChildPoint:function(child){
+				var position = child.position();
+				var x = position.left;
+				var y = position.top;
+				var elementWidth = _element.width();
+				var elementHeight = _element.height();
+				var parentWidth = _parent.width();
+				var parentHeight = _parent.height();
+				if (elementWidth > parentWidth){ //Horizontal
+					var childWidth = child.width();
+					console.log((x + childWidth), elementWidth);
+					if (Math.abs((x + childWidth) - elementWidth) <= 1){ //Edge
+						x -= parentWidth - childWidth;
+					}
+				}
+				if (elementHeight > parentHeight){ //Vertical
+					var childHeight = child.height();
+					if (Math.abs((y + childHeight) - elementHeight) <= 1){ //Edge
+						y -= parentHeight - childHeight;
+					}
+				}
+				return {
+					x:x,
+					y:y
+				};
 			},
 			
 			fireEventChanged:function(){
