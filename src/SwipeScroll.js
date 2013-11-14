@@ -696,13 +696,13 @@ var SwipeScroll = {
 				var parentHeight = _parent.height();
 				if (elementWidth > parentWidth){ //Horizontal
 					var childWidth = child.width();
-					if (Math.abs((x + childWidth) - elementWidth) <= 1){ //Edge
+					if (Math.round((x / elementWidth) * 100) + Math.round((childWidth / elementWidth) * 100) == 100){ //Against right edge
 						x -= parentWidth - childWidth;
 					}
 				}
 				if (elementHeight > parentHeight){ //Vertical
 					var childHeight = child.height();
-					if (Math.abs((y + childHeight) - elementHeight) <= 1){ //Edge
+					if (Math.round((y / elementHeight) * 100) + Math.round((childHeight / elementHeight) * 100) == 100){ //Against right edge
 						y -= parentHeight - childHeight;
 					}
 				}
