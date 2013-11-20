@@ -1,5 +1,5 @@
 /*
-* SwipeScroll v1.0.1 Copyright (c) 2013 AJ Savino
+* SwipeScroll v1.1.0 Copyright (c) 2013 AJ Savino
 * 
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
@@ -235,23 +235,17 @@ var SwipeScroll = {
 				if (typeof(selectChild.data("SwipeScroll.index")) === typeof(undefined)){
 					_methods.updateChildren();
 				}
-				var selectChildPoint = _methods.getChildPoint(selectChild);
-				_toElementPoint.x = -selectChildPoint.x;
-				_toElementPoint.y = -selectChildPoint.y;
-				_methods.rangeElementPoint();
-				
-				var snapChild = _methods.getClosestChild(_toElementPoint);
-				var snapChildPoint = _methods.getChildPoint(snapChild);
-				_toElementPoint.x = -snapChildPoint.x;
-				_toElementPoint.y = -snapChildPoint.y;
+				var selectedChildPoint = _methods.getChildPoint(selectChild);
+				_toElementPoint.x = -selectedChildPoint.x;
+				_toElementPoint.y = -selectedChildPoint.y;
 				if (_element.is(":hidden")){ //Position not accurate
 					_toElementPoint.x = 0;
 					_toElementPoint.y = 0;
 				}
 				
-				var newIndex = snapChild.data("SwipeScroll.index");
+				var newIndex = selectChild.data("SwipeScroll.index");
 				if (newIndex != _selectedIndex){
-					_selectedChild = snapChild;
+					_selectedChild = selectChild;
 					_selectedIndex = newIndex;
 					_indexChanged = true;
 				} else {
@@ -678,7 +672,7 @@ var SwipeScroll = {
 					var diffX = fromPoint.x + childPoint.x;
 					var diffY = fromPoint.y + childPoint.y;
 					var dist = Math.sqrt(diffX * diffX + diffY * diffY);
-					if (bestDist == -1 || dist < bestDist){
+					if (bestDist == -1 || dist <= bestDist){
 						bestDist = dist;
 						bestChild = child;
 					}
