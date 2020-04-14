@@ -4,18 +4,18 @@
         <title>SwipeScroll Bidirectional</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        
+
         <style type="text/css">
 			* {
 				margin:0;
 				border:0;
 				padding:0;
 			}
-			
+
 			ul, ol {
 				list-style:none;
 			}
-			
+
 			#scrollerWrapper {
 				overflow:hidden;
 				width:500px;
@@ -23,14 +23,14 @@
 				position:relative;
 				background-color:#F0F0F0;
 			}
-			
+
 			#scroller {
 				position:relative;
 				top:0;
 				left:0;
 				display:table;
 			}
-			
+
 			.scroller-child {
 				position:absolute;
 			}
@@ -41,22 +41,22 @@
 			<ul id="scroller">
 			</ul>
 		</div>
-		
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/SwipeScroll.min.js"></script>
+
+		<script type="text/javascript" src="../src/_lib/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../src/SwipeScroll.js"></script>
 		<script type="text/javascript">
 			var NUM_CHILDREN = 49; //Should be a square
 			var SIZE_INCREMENT = 100; //px
-			
+
 			$(document).on("ready", function(){
 				buildScroller(NUM_CHILDREN, SIZE_INCREMENT);
-				
+
 				var scroller = $("#scroller").SwipeScroll({ //Initialize SwipeScroll returns jQuery instance
 					fps:60,
 					bidirectional:true
-				}); 
+				});
 			});
-			
+
 			//This is only used to generate the scroll content for this example
 			function buildScroller(numChildren, sizeIncrement){
 				var scrollerWrapper = $("#scrollerWrapper");
@@ -69,7 +69,7 @@
 				scrollerWrapper.css("height", scrollerWrapperSize + "px");
 				scroller.css("width", scrollerSize + "px");
 				scroller.css("height", scrollerSize + "px");
-				
+
 				for (var i = 0; i < sqrtNumChildren; i++){
 					var y = ((i * (i + 1)) >> 1) * sizeIncrement;
 					var height = (i + 1) * sizeIncrement;

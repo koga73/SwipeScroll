@@ -4,41 +4,41 @@
         <title>SwipeScroll Marquee</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        
+
         <style type="text/css">
 			* {
 				margin:0;
 				border:0;
 				padding:0;
 			}
-			
+
 			ul, ol {
 				list-style:none;
 			}
-			
+
 			#scrollerWrapper {
 				overflow:hidden;
 				width:100%;
 				height:400px;
 				position:relative;
 			}
-			
+
 			#scroller {
 				position:relative;
 				top:0;
 				left:0;
 				height:100%;
 			}
-			
+
 			.scroller-child {
 				float:left;
 				height:100%;
 			}
-			
+
 			#arrowLeft {
 				float:left;
 			}
-			
+
 			#arrowRight {
 				float:right;
 			}
@@ -61,30 +61,30 @@
 				<li class="scroller-child" style="background-color:#800080;"></li>
 			</ul>
 		</div>
-		
+
 		<div id="arrows">
 			<a id="arrowLeft" href="#Previous">&lt; PREVIOUS</a>
 			<a id="arrowRight" href="#Next">NEXT &gt;</a>
 		</div>
-		
-		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script type="text/javascript" src="js/SwipeScroll.min.js"></script>
+
+		<script type="text/javascript" src="../src/_lib/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../src/SwipeScroll.js"></script>
 		<script type="text/javascript">
 			var NUM_CHILDREN_VISIBLE = 4;
-			
+
 			var scroller = null;
-			
+
 			$(document).on("ready", function(){
 				sizeScroller(NUM_CHILDREN_VISIBLE);
-				
+
 				scroller = $("#scroller").SwipeScroll({ 		//Initialize SwipeScroll returns jQuery instance
 					fps:60,										//Defaults to 30fps. Some devices (such as iPads) are able to run at 60fps
 					scrollbars:true								//Defaults to false
 				});
-				
+
 				initArrows(NUM_CHILDREN_VISIBLE);
 			});
-			
+
 			function sizeScroller(numChildrenVisible){			//Used to size children width
 				var scrollerChildren = $(".scroller-child");
 				var scrollerWidth = (100 / numChildrenVisible) * scrollerChildren.length;
@@ -92,7 +92,7 @@
 				$("#scroller").css("width", scrollerWidth + "%");
 				scrollerChildren.css("width", childWidth + "%");
 			}
-			
+
 			function initArrows(numChildrenToScroll){
 				var arrowLeft = $("#arrowLeft");
 				var arrowRight = $("#arrowRight");

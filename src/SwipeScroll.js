@@ -1,31 +1,15 @@
 /*
 * SwipeScroll v1.1.0 Copyright (c) 2013 AJ Savino
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
+* https://github.com/koga73/SwipeScroll
+* MIT License
 */
 var SwipeScroll = {
 	EVENT_CHANGING:"event_changing",		//Fires when tween begins
 	EVENT_CHANGED:"event_changed",			//Fires when tween ends or has completed changing
-	
+
 	DIRECTION_HORIZONTAL:"horizontal",
 	DIRECTION_VERTICAL:"vertical",
-	
+
 	defaults:{
 		fps:30,					//FPS for rendering
 		timing:0.5,				//Seconds to scroll over
@@ -40,11 +24,11 @@ var SwipeScroll = {
 		cssAnimationClass:null,	//CSS3 animation class to use when tweening (optional)
 		bidirectional:false		//Allow scrolling at angles rather than just horizontal or vertical
 	},
-	
+
 	expoEaseOut:function(elapsedTime, startVal, diffVal, totalTime){ //Default
 		return diffVal * (-Math.pow(2, -10 * elapsedTime / totalTime) + 1) + startVal;
 	},
-	
+
 	NormalTimer:function(){
 		var classDefinition = {
 			delta:0,
@@ -63,43 +47,43 @@ var SwipeScroll = {
 (function($){ //Dependencies: jQuery (Built on 1.8.2)
 	$.fn.SwipeScroll = function(options){
 		var _options = $.extend({}, $.fn.SwipeScroll.defaults, options);
-		
+
 		var _isActive = false;
 		var _element = this;
 		var _parent = this.parent();
 		var _children = null;
-		
+
 		var _scrollbarHMask = null;
 		var _scrollbarH = null;
 		var _scrollbarVMask = null;
 		var _scrollbarV = null;
-		
+
 		var _isDragging = false;
 		var _beginDragPoint = {};
 		var _dragPoint = {};
 		var _dragElapsedTime = 0;
 		var _dragDirection = null;
-		
+
 		var _beginDragElementPoint = {};
 		var _lastElementPoint = {};
 		var _toElementPoint = {};
 		var _beginDragPageScrollPoint = {};
 		var _toPageScrollPoint = {};
 		var _isPageScrolling = false;
-		
+
 		var _isRendering = false;
 		var _beginTweenPoint = {};
 		var _tweenElapsedTime = 0;
-		
+
 		var _dragNormalTimer = null;
 		var _renderNormalTimer = null;
 		var _renderTimer = null;
 		var _resizeTimeout = null;
-		
+
 		var _selectedChild = null;
 		var _selectedIndex = -1;
 		var _indexChanged = false;
-		
+
 		var _methods = {
 			initialize:function(){
 				if (!_options.scrollEasing){
@@ -126,7 +110,7 @@ var SwipeScroll = {
 				_selectedChild = $(_children[0]);
 				_selectedIndex = 0;
 			},
-			
+
 			destroy:function(){
 				if (_scrollbarHMask){
 					_scrollbarHMask.remove();
@@ -157,13 +141,13 @@ var SwipeScroll = {
 				_children = null;
 				_selectedChild = null;
 			},
-			
+
 			activate:function(){
 				if (_isActive){
 					return;
 				}
 				_isActive = true;
-				
+
 				_parent.css({
 					"-webkit-transform":"translate3d(0, 0, 0)", //Hardware acceleration hacks
 					"-moz-transform":"translate3d(0, 0, 0)",
@@ -176,24 +160,24 @@ var SwipeScroll = {
 					"-ms-touch-action":"none", //Prevent IE from capturing touch events
 				});
 				_parent.on("touchstart mousedown", _methods.handler_beginDrag);
-				
+
 				var doc = $(document);
 				doc.on("touchmove mousemove", _methods.handler_moveDrag);
 				doc.on("touchend mouseup", _methods.handler_endDrag);
-				
+
 				var resizeEvent = "resize";
 				if ("onorientationchange" in window){
 					resizeEvent = "orientationchange";
 				}
 				$(window).on(resizeEvent, _methods.handler_resize);
 			},
-			
+
 			deactivate:function(){
 				if (!_isActive){
 					return;
 				}
 				_isActive = false;
-				
+
 				_parent.css({
 					"-webkit-transform":"", //Hardware acceleration hacks
 					"-moz-transform":"",
@@ -206,25 +190,25 @@ var SwipeScroll = {
 					"-ms-touch-action":"auto", //Prevent IE from capturing touch events
 				});
 				_parent.off("touchstart mousedown", _methods.handler_beginDrag);
-				
+
 				var doc = $(document);
 				doc.off("touchmove mousemove", _methods.handler_moveDrag);
 				doc.off("touchend mouseup", _methods.handler_endDrag);
-				
+
 				var resizeEvent = "resize";
 				if ("onorientationchange" in window){
 					resizeEvent = "orientationchange";
 				}
 				$(window).off(resizeEvent, _methods.handler_resize);
 			},
-			
+
 			reset:function(){
 				_methods.deactivate();
 				_methods.destroy();
 				_methods.initialize();
 				_methods.activate();
 			},
-			
+
 			scrollToChild:function(selectChild, tween){ //Selects child
 				if (!selectChild || !selectChild.jquery){
 					throw new Error("Invalid selectChild must be a jquery object of _element.children().");
@@ -242,7 +226,7 @@ var SwipeScroll = {
 					_toElementPoint.x = 0;
 					_toElementPoint.y = 0;
 				}
-				
+
 				var newIndex = selectChild.data("SwipeScroll.index");
 				if (newIndex != _selectedIndex){
 					_selectedChild = selectChild;
@@ -251,7 +235,7 @@ var SwipeScroll = {
 				} else {
 					_indexChanged = false
 				}
-				
+
 				_methods.endDrag();
 				_methods.endTween(true); //Calls endRender. Prevent eventChanged
 				if (tween){
@@ -262,12 +246,12 @@ var SwipeScroll = {
 					_methods.fireEventChanged();
 				}
 			},
-			
+
 			scrollToIndex:function(index){
 				index = Math.max(Math.min(index, _children.length - 1), 0);
 				_methods.scrollToChild($(_children[index]));
 			},
-			
+
 			scrollPrevious:function(count, tween){
 				if (typeof(count) === typeof(undefined)){
 					count = 1; //Default
@@ -277,7 +261,7 @@ var SwipeScroll = {
 				}
 				_methods.scrollToIndex(_selectedIndex - count);
 			},
-			
+
 			scrollNext:function(count, tween){
 				if (typeof(count) === typeof(undefined)){
 					count = 1; //Default
@@ -287,7 +271,7 @@ var SwipeScroll = {
 				}
 				_methods.scrollToIndex(_selectedIndex + count);
 			},
-			
+
 			updateChildren:function(){
 				_children = _element.children();
 				var childrenLen = _children.length;
@@ -301,13 +285,13 @@ var SwipeScroll = {
 				aElement.off("click", _methods.handler_child_click);
 				aElement.on("click", _methods.handler_child_click);
 			},
-			
+
 			handler_child_click:function(){ //Prevent clicks when Swiping
 				if (_isRendering){
 					return false;
 				}
 			},
-			
+
 			buildScrollbars:function(){
 				_scrollbarHMask = $("<div class='swipescroll-scrollbar-mask swipescroll-scrollbar-h-mask'style='display:none;overflow:hidden;position:absolute;bottom:1px;left:1px;width:100%;height:4px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;'></div>");
 				_scrollbarH = $("<div class='swipescroll-scrollbar swipescroll-scrollbar-h'style='position:absolute;left:0;bottom:0;background-color:rgba(0,0,0,0.6);min-width:4px;height:100%;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;'></div>");
@@ -318,7 +302,7 @@ var SwipeScroll = {
 				_scrollbarVMask.append(_scrollbarV);
 				_parent.append(_scrollbarVMask);
 			},
-			
+
 			sizeScrollbars:function(){
 				var elementWidth = _element.width();
 				var elementHeight = _element.height();
@@ -342,7 +326,7 @@ var SwipeScroll = {
 				}
 				_methods.positionScrollbars();
 			},
-			
+
 			positionScrollbars:function(){
 				var elementWidth = _element.width();
 				var elementHeight = _element.height();
@@ -362,7 +346,7 @@ var SwipeScroll = {
 				_scrollbarH.css("left", scrollbarHLeft + "px");
 				_scrollbarV.css("top", scrollbarVTop + "px");
 			},
-			
+
 			handler_beginDrag:function(evt){
 				if (evt.type == "mousedown"){ //Desktop
 					evt.preventDefault();
@@ -373,25 +357,25 @@ var SwipeScroll = {
 				_isDragging = true;
 				_beginDragPoint = _methods.getDragPoint(evt);
 				_dragDirection = null;
-				
+
 				_beginDragElementPoint = _methods.getElementPoint();
 				_toElementPoint = _methods.getElementPoint();
 				_beginDragPageScrollPoint = _methods.getPageScrollPoint();
 				_toPageScrollPoint = _methods.getPageScrollPoint();
 				_isPageScrolling = false;
-				
+
 				_methods.endTween(); //Calls endRender
-				
+
 				_dragElapsedTime = 0;
 				_dragNormalTimer.tick();
 			},
-			
+
 			handler_moveDrag:function(evt){
 				if (!_isDragging){
 					return;
 				}
 				evt.preventDefault();
-				
+
 				var delta = _dragNormalTimer.tick();
 				if (!delta){
 					return;
@@ -400,7 +384,7 @@ var SwipeScroll = {
 				_dragPoint = _methods.getDragPoint(evt);
 				var dragDiffX = _dragPoint.x - _beginDragPoint.x;
 				var dragDiffY = _dragPoint.y - _beginDragPoint.y;
-				
+
 				var elementWidth = _element.width();
 				var elementHeight = _element.height();
 				var parentWidth = _parent.width();
@@ -423,7 +407,7 @@ var SwipeScroll = {
 						return;
 					}
 				}
-				
+
 				if (_dragDirection == SwipeScroll.DIRECTION_HORIZONTAL || _options.bidirectional){ //Dragged horizontal
 					if (!_isPageScrolling){
 						var overDrag = _options.overDrag * parentWidth;
@@ -443,7 +427,7 @@ var SwipeScroll = {
 					}
 				}
 			},
-			
+
 			handler_endDrag:function(evt){
 				if (evt.type == "mouseup"){ //Desktop
 					evt.preventDefault();
@@ -471,7 +455,7 @@ var SwipeScroll = {
 					}
 				}
 			},
-			
+
 			endDrag:function(){
 				if (!_isDragging){
 					return false;
@@ -479,17 +463,17 @@ var SwipeScroll = {
 				_isDragging = false;
 				return true;
 			},
-			
+
 			beginRender:function(){
 				if (_isRendering){
 					return;
 				}
 				_isRendering = true;
-				
+
 				_renderNormalTimer.tick();
 				_renderTimer = setInterval(_methods.handler_renderTimer, (1000 / _options.fps) >> 0);
 			},
-			
+
 			handler_renderTimer:function(evt){
 				if (!_isRendering){
 					return;
@@ -515,7 +499,7 @@ var SwipeScroll = {
 					_methods.positionScrollbars();
 				}
 			},
-			
+
 			endRender:function(){
 				if (!_isRendering){
 					return;
@@ -525,11 +509,11 @@ var SwipeScroll = {
 				clearInterval(_renderTimer);
 				_renderTimer = null;
 			},
-			
+
 			beginTween:function(fromPoint){
 				_beginTweenPoint = fromPoint;
 				_tweenElapsedTime = 0;
-				
+
 				if (!_isPageScrolling){
 					$(_element).trigger(SwipeScroll.EVENT_CHANGING, {
 						selectedChild:_selectedChild,
@@ -543,7 +527,7 @@ var SwipeScroll = {
 					}
 				}
 			},
-			
+
 			doTween:function(toPoint, delta){ //Called from render
 				var newPoint = {};
 				_tweenElapsedTime += delta;
@@ -558,11 +542,11 @@ var SwipeScroll = {
 				}
 				return newPoint;
 			},
-			
+
 			endTween:function(preventEventChanged){
 				_beginTweenPoint = null;
 				_tweenElapsedTime = _options.timing;
-				
+
 				_methods.endRender();
 				if (!_isPageScrolling){
 					if (_options.cssAnimationClass){
@@ -574,11 +558,11 @@ var SwipeScroll = {
 					}
 				}
 			},
-			
+
 			isTweening:function(){
 				return _tweenElapsedTime > 0 && _tweenElapsedTime < _options.timing;
 			},
-			
+
 			handler_resize:function(){
 				if (_resizeTimeout){
 					clearTimeout(_resizeTimeout);
@@ -593,7 +577,7 @@ var SwipeScroll = {
 					}
 				}, (1000 / _options.fps) >> 0);
 			},
-			
+
 			getDragPoint:function(evt){
 				var pointData = evt;
 				if (evt.originalEvent){
@@ -606,7 +590,7 @@ var SwipeScroll = {
 					y:pointData.clientY
 				};
 			},
-			
+
 			calcMomentum:function(fromPoint, toPoint){
 				var pointDiffX = toPoint.x - fromPoint.x;
 				var pointDiffY = toPoint.y - fromPoint.y;
@@ -619,14 +603,14 @@ var SwipeScroll = {
 				toPoint.y += pointDiffY / pointDist * momentumDist;
 				return toPoint;
 			},
-			
+
 			getElementPoint:function(){
 				return {
 					x:parseInt(_element.css("left")),
 					y:parseInt(_element.css("top"))
 				};
 			},
-			
+
 			setElementPoint:function(point){
 				var newX = point.x >> 0; //Floor
 				var newY = point.y >> 0; //Floor
@@ -639,28 +623,28 @@ var SwipeScroll = {
 					_lastElementPoint.y = newY;
 				}
 			},
-			
+
 			rangeElementPoint:function(){
 				_toElementPoint.x = Math.min(Math.max(_toElementPoint.x, _parent.width() - _element.width()), 0);
 				_toElementPoint.y = Math.min(Math.max(_toElementPoint.y, _parent.height() - _element.height()), 0);
 			},
-			
+
 			getPageScrollPoint:function(){
 				return {
 					x:-(window.pageXOffset || document.documentElement.scrollLeft),
 					y:-(window.pageYOffset || document.documentElement.scrollTop)
 				};
 			},
-			
+
 			setPageScrollPoint:function(point){
 				window.scrollTo(-point.x >> 0, -point.y >> 0);
 			},
-			
+
 			rangePageScrollPoint:function(){
 				_toPageScrollPoint.x = Math.min(Math.max(_toPageScrollPoint.x, $(window).width() - $(document).width()), 0);
 				_toPageScrollPoint.y = Math.min(Math.max(_toPageScrollPoint.y, $(window).height() - $(document).height()), 0);
 			},
-			
+
 			getClosestChild:function(fromPoint){
 				var bestDist = -1;
 				var bestChild = null;
@@ -679,7 +663,7 @@ var SwipeScroll = {
 				}
 				return bestChild;
 			},
-			
+
 			getChildPoint:function(child){
 				var position = child.position();
 				var x = position.left;
@@ -705,7 +689,7 @@ var SwipeScroll = {
 					y:y
 				};
 			},
-			
+
 			fireEventChanged:function(){
 				if (!_indexChanged){
 					return;
@@ -719,7 +703,7 @@ var SwipeScroll = {
 		};
 		_methods.initialize();
 		_methods.activate();
-		
+
 		this.SwipeScroll = { //Expose public methods
 			initialize:_methods.initialize,
 			destroy:_methods.destroy,
@@ -740,6 +724,6 @@ var SwipeScroll = {
 		};
 		return this; //jQuery chaining
 	}
-	
+
 	$.fn.SwipeScroll.defaults = SwipeScroll.defaults;
 }(jQuery));
