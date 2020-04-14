@@ -2,8 +2,13 @@
 
 SwipeScroll is a jQuery plug-in that provides touch based swiping for Tablets and Mobile devices.
 
+---
+
 **This library is no longer maintained!**
+<br/>
 *However if you need a swiper that works in IE8 and old mobile devices then this will do the job*
+
+---
 
 - Easy to implement
 - Built for speed
