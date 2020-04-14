@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html translate="no">
     <head>
-        <title>SwipeScroll Events</title>
+        <title>SwipeScroll Basic</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -67,14 +67,6 @@
 				var scroller = $("#scroller").SwipeScroll({ //Initialize SwipeScroll returns instance
 					useSnap:false,
 					scrollbars:true
-				});
-
-				scroller.on(SwipeScroll.EVENT_CHANGING, function(evt, args){ //Fires on begin change
-					console.log("CHANGING TO CHILD INDEX: " + args.selectedIndex);
-				});
-
-				scroller.on(SwipeScroll.EVENT_CHANGED, function(evt, args){ //Fires on end change
-					console.log("CHANGED TO CHILD INDEX: " + args.selectedIndex);
 				});
 			});
 		</script>
